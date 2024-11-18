@@ -6,14 +6,17 @@ import {
   Patch,
   Param,
   Delete,
-  Query
+  Query,
+  Ip
 } from '@nestjs/common';
 import { UsersdbService } from './usersdb.service';
 import { Prisma } from '@prisma/client';
+import { LoggerService } from 'src/logger/logger.service';
 
 @Controller('usersdb')
 export class UsersdbController {
   constructor(private readonly usersdbService: UsersdbService) {}
+  private readonly logger = new LoggerService(UsersdbController.name);
 
   @Post()
   create(@Body() createUsersdbDto: Prisma.UserCreateInput) {
@@ -21,7 +24,8 @@ export class UsersdbController {
   }
 
   @Get()
-  findAll(@Query('problemata') problemata?: string) {
+  findAll(@Ip() ip: string, @Query('problemata') problemata?: string) {
+    this.logger.log(`Запрос всех пользователей от IP: ${ip}`);
     let problemataBoolean: boolean | undefined;
     if (problemata === 'true') {
       problemataBoolean = true;

@@ -25,7 +25,10 @@ export class UsersdbController {
 
   @Get()
   findAll(@Ip() ip: string, @Query('problemata') problemata?: string) {
-    this.logger.log(`Запрос всех пользователей от IP: ${ip}`);
+    this.logger.log(
+      `Запрос всех пользователей от IP: ${ip}`,
+      UsersdbController.name,
+    );
     let problemataBoolean: boolean | undefined;
     if (problemata === 'true') {
       problemataBoolean = true;
